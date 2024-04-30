@@ -28,4 +28,4 @@ Please note that this application is trying to connect to a MongoDB database run
 
 To run MongoDB please run this command 
 
-mongod --dbpath ./data
+`mongod --dbpath ./data`
