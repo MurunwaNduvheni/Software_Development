@@ -8,6 +8,8 @@ Open a terminal in the directory containing your app.js file.
 
 Install the necessary dependencies using `Npm install`
 
+Make sure you create a directory called `data` inside the project's directory before running the application
+
 Run the application with the following command:
 
 `node app.js`
