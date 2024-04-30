@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Survey Data Analysis</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      .results {
+        margin-top: 20px;
+      }
+
+      .results ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .results li {
+        margin-bottom: 10px;
+      }
+
+      .results li span {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Survey Data Analysis</h1>
+      <div class="results">
+        <h2>Results</h2>
+        <ul>
+          <li>Total Surveys Completed: <span id="totalSurveys"></span></li>
+          <li>Average Age: <span id="averageAge"></span></li>
+          <li>Oldest Person: <span id="oldestPerson"></span></li>
+          <li>Youngest Person: <span id="youngestPerson"></span></li>
+          <li>
+            Percentage of People Who Like Pizza:
+            <span id="pizzaPercentage"></span>%
+          </li>
+          <li>
+            Percentage of People Who Like Pasta:
+            <span id="pastaPercentage"></span>%
+          </li>
+          <li>
+            Percentage of People Who Like Pap and Wors:
+            <span id="papAndWorsPercentage"></span>%
+          </li>
+          <li>
+            People Who Like To Watch Movies: <span id="movieRating"></span>
+          </li>
+          <li>
+            People Who Like To Listen to Music: <span id="musicRating"></span>
+          </li>
+          <li>
+            People Who Like To Eat Out: <span id="eatingOutRating"></span>
+          </li>
+          <li>People Who Like To Watch TV: <span id="tvRating"></span></li>
+        </ul>
+      </div>
+    </div>
+    <script>
+      fetch("/api/survey-results")
+        .then((response) => response.json())
+        .then((surveyData) => {
+          console.log(surveyData);
+          document.getElementById("totalSurveys").innerText = surveyData.length;
+          document.getElementById("averageAge").innerText =
+            calculateAverageAge(surveyData);
+          document.getElementById("oldestPerson").innerText =
+            findOldestPerson(surveyData).fullName;
+          document.getElementById("youngestPerson").innerText =
+            findYoungestPerson(surveyData).fullName;
+          document.getElementById("pizzaPercentage").innerText =
+            calculateFoodPercentage(surveyData, "Pizza");
+          document.getElementById("pastaPercentage").innerText =
+            calculateFoodPercentage(surveyData, "Pasta");
+          document.getElementById("papAndWorsPercentage").innerText =
+            calculateFoodPercentage(surveyData, "Pap and Wors");
+          document.getElementById("movieRating").innerText =
+            calculateAverageRating(surveyData, "Movies");
+          document.getElementById("musicRating").innerText =
+            calculateAverageRating(surveyData, "Music");
+          document.getElementById("eatingOutRating").innerText =
+            calculateAverageRating(surveyData, "Eating Out");
+          document.getElementById("tvRating").innerText =
+            calculateAverageRating(surveyData, "TV");
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+
+      function calculateAge(birthDate) {
+        const birthYear = new Date(birthDate).getFullYear();
+        const currentYear = new Date().getFullYear();
+        return currentYear - birthYear;
+      }
+
+      function calculateAverageAge(data) {
+        const totalAge = data.reduce(
+          (acc, curr) => acc + calculateAge(curr.birthDate),
+          0
+        );
+        return (totalAge / data.length).toFixed(1);
+      }
+
+      function findOldestPerson(data) {
+        return data.reduce((oldest, current) => {
+          const oldestAge = calculateAge(oldest.birthDate);
+          const currentAge = calculateAge(current.birthDate);
+          return oldestAge > currentAge ? oldest : current;
+        });
+      }
+
+      function findYoungestPerson(data) {
+        return data.reduce((youngest, current) => {
+          const youngestAge = calculateAge(youngest.birthDate);
+          const currentAge = calculateAge(current.birthDate);
+          return youngestAge < currentAge ? youngest : current;
+        });
+      }
+
+      function calculateFoodPercentage(data, food) {
+  const foodLovers = data.filter((person) => {
+    if (Array.isArray(person.favoriteFood)) {
+      return person.favoriteFood.includes(food);
+    } else {
+      return person.favoriteFood === food;
+    }
+  }).length;
+  return ((foodLovers / data.length) * 100).toFixed(1);
+}
+function calculateAverageRating(data, activity) {
+  const filteredData = data.filter(person => person.activity === activity);
+  const ratings = filteredData.map((person) => {
+    switch (person.lifestyleRating) {
+      case "Excellent":
+        return 5;
+      case "Good":
+        return 4;
+      case "Average":
+        return 3;
+      case "Poor":
+        return 2;
+      case "Very Poor":
+        return 1;
+      default:
+        return 0;
+    }
+  });
+  const averageRating =
+    ratings.reduce((acc, curr) => acc + curr, 0) / ratings.length;
+  return averageRating.toFixed(1);
+}
+    </script>
+  </body>
+</html>

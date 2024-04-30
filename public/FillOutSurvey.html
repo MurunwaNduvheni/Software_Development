@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Survey Application</title>
+
+    <style>
+        body {
+
+            font-family: Arial, sans-serif;
+
+            margin: 0;
+
+            padding: 0;
+
+            background-color: #f4f4f4;
+
+        }
+
+
+
+        .container {
+
+            max-width: 600px;
+
+            margin: 50px auto;
+
+            padding: 20px;
+
+            background-color: #fff;
+
+            border-radius: 5px;
+
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+            text-align: center;
+            /* Center align the content within the container */
+
+        }
+
+
+
+        h2 {
+
+            text-align: center;
+
+        }
+
+
+
+        form {
+
+            text-align: left;
+
+            margin-top: 20px;
+
+        }
+
+
+
+        label {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            font-weight: bold;
+
+        }
+
+        input[type="text"],
+
+        input[type="email"],
+
+        input[type="tel"],
+
+        input[type="date"],
+
+        input[type="number"],
+
+        input[type="checkbox"] {
+
+            width: 50%;
+
+            padding: 10px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 5px;
+
+            box-sizing: border-box;
+
+            margin-bottom: 10px;
+
+        }
+
+
+
+        input[type="submit"] {
+
+            width: 200px;
+            /* Set fixed width for the submit button */
+
+            padding: 10px;
+
+            background-color: #00bcd4;
+
+            color: #fff;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+            margin-top: 20px;
+            /* Add top margin to separate from previous elements */
+
+        }
+
+
+
+        input[type="submit"]:hover {
+
+            background-color: #0097a7;
+
+        }
+
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin-bottom: 20px;
+
+        }
+
+
+
+        th,
+
+        td {
+
+            padding: 10px;
+
+            border: 1px solid #ccc;
+
+            text-align: left;
+
+        }
+
+
+
+        th {
+
+            background-color: #00bcd4;
+
+            color: #fff;
+
+        }
+
+
+
+        tr:nth-child(even) {
+
+            background-color: #f9f9f9;
+
+        }
+
+
+
+        /* Display favorite food options horizontally */
+
+        .favorite-food-options label {
+
+            display: inline-block;
+
+            margin-right: 5px;
+
+        }
+
+        .view-results-link {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 14px;
+            text-decoration: none;
+            color: #00bcd4;
+        }
+    </style
+        
+    </style>
+
+</head>
+
+
+
+<body>
+
+    <a href="/survey-results" class="view-results-link">View Survey Results</a>
+
+    <div class='container'>
+
+        <h2>Survey Application</h2>
+
+        <form id="surveyForm" action="/submit-survey" method="post" onsubmit="return validateForm()">
+
+            <div class='form-group'>
+
+                <label for="fullName">Full Name:</label>
+
+                <input type="text" id="fullName" name="fullName" required>
+
+            </div>
+
+            <div class='form-group'>
+
+                <label for="email">Email:</label>
+
+                <input type="email" id="email" name="email" required>
+
+            </div>
+
+            <div class='form-group'>
+
+                <label for="contactNumber">Contact Number:</label>
+
+                <input type="tel" id="contactNumber" name="contactNumber" required>
+
+            </div>
+
+            <div class='form-group'>
+
+                <label for="birthDate">Birthdate:</label>
+
+                <input type="date" id="birthDate" name="birthDate" max="2024-12-31" required>
+
+            </div>
+
+            <div class='form-group favorite-food-options'>
+
+                <!-- Display favorite food options horizontally -->
+
+                <label>Favorite Food:</label>
+
+                <label><input type="checkbox" name="favoriteFood" value="Pizza"> Pizza</label>
+
+                <label><input type="checkbox" name="favoriteFood" value="Burger"> Burger</label>
+
+                <label><input type="checkbox" name="favoriteFood" value="Pasta"> Pasta</label>
+
+                <label><input type="checkbox" name="favoriteFood" value="Pap and Wors"> Pap and Wors</label>
+
+                <label><input type="checkbox" name="favoriteFood" value="Other"> Other</label>
+
+            </div>
+
+            <p>Please rate your level of agreement on a scale from 1 to 5:</p>
+
+            <table>
+
+                <tr>
+
+                    <th></th>
+
+                    <th>1 (Strongly Disagree)</th>
+
+                    <th>2 (Disagree)</th>
+
+                    <th>3 (Neutral)</th>
+
+                    <th>4 (Agree)</th>
+
+                    <th>5 (Strongly Agree)</th>
+
+                </tr>
+
+                <tr>
+
+                    <td>I like to watch movies</td>
+
+                    <td><input type="radio" name="movies" value="1" required></td>
+
+                    <td><input type="radio" name="movies" value="2"></td>
+
+                    <td><input type="radio" name="movies" value="3"></td>
+
+                    <td><input type="radio" name="movies" value="4"></td>
+
+                    <td><input type="radio" name="movies" value="5"></td>
+
+                </tr>
+
+                <tr>
+
+                    <td>I like to listen to radio</td>
+
+                    <td><input type="radio" name="radio" value="1" required></td>
+
+                    <td><input type="radio" name="radio" value="2"></td>
+
+                    <td><input type="radio" name="radio" value="3"></td>
+
+                    <td><input type="radio" name="radio" value="4"></td>
+
+                    <td><input type="radio" name="radio" value="5"></td>
+
+                </tr>
+
+                <tr>
+
+                    <td>I like to eat out</td>
+
+                    <td><input type="radio" name="eatOut" value="1" required></td>
+
+                    <td><input type="radio" name="eatOut" value="2"></td>
+
+                    <td><input type="radio" name="eatOut" value="3"></td>
+
+                    <td><input type="radio" name="eatOut" value="4"></td>
+
+                    <td><input type="radio" name="eatOut" value="5"></td>
+
+                </tr>
+
+                <tr>
+
+                    <td>I like to watch TV</td>
+
+                    <td><input type="radio" name="watchTV" value="1" required></td>
+
+                    <td><input type="radio" name="watchTV" value="2"></td>
+
+                    <td><input type="radio" name="watchTV" value="3"></td>
+
+                    <td><input type="radio" name="watchTV" value="4"></td>
+
+                    <td><input type="radio" name="watchTV" value="5"></td>
+
+                </tr>
+
+            </table>
+
+            <!-- Submit Button (Centered) -->
+
+            <input type="submit" value="Submit">
+
+        </form>
+
+    </div>
+
+</body>
+
+
+
+</html>
+
+    <script>
+
+        function validateForm() {
+
+            // Validate rating questions
+
+            const ratingQuestions = ['movies', 'radio', 'eatOut', 'watchTV'];
+
+            for (let question of ratingQuestions) {
+
+                const radios = document.getElementsByName(question);
+
+                let checked = false;
+                
+
+                for (let radio of radios) {
+
+                    if (radio.checked) {
+
+                        checked = true;
+
+                        break;
+
+                    }
+
+                }
+
+                if (!checked) {
+
+                    alert('Please rate all questions.');
+
+                    return false;
+
+                }
+
+            }
+
+
+
+            // Calculate age based on birthdate
+
+            const birthDate = new Date(document.getElementById('birthDate').value);
+
+            const today = new Date();
+
+            const age = today.getFullYear() - birthDate.getFullYear();
+
+
+
+            // Check if age is within the allowed range (5 to 120)
+
+            if (age < 5 || age > 120) {
+
+                alert('Age must be between 5 and 120 years.');
+
+                return false;
+
+            }
+
+
+
+            // Form validation successful
+
+            return true;
+
+        }
+
+    </script>
+
